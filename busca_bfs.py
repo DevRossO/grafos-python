@@ -1,3 +1,5 @@
+import collections
+
 mapa = {
     'Arad': [
         ('Zerind', 75),
@@ -25,22 +27,22 @@ mapa = {
     'Neamt': [('Iasi', 87)],
 }
 
-def busca_dfs(grafo, inicio,  objetivo):
-    pilha = [(inicio, [inicio], 0)]
+def busca_bfs(grafo, inicio, objetivo):
+    fila = collections.deque([(inicio, [inicio], 0)])
     visitados = set()
-    while pilha:
-        no_atual, caminho, custo = pilha.pop()
+
+    while fila:
+        no_atual, caminho, custo = fila.popleft()
+
         if no_atual == objetivo:
             return caminho, custo
         if no_atual not in visitados:
             visitados.add(no_atual)
             for vizinho, distancia in grafo[no_atual]:
-                if vizinho not in visitados:
-                    pilha.append((vizinho, caminho + [vizinho], custo + distancia))
+                fila.append((vizinho, caminho + [vizinho], custo + distancia))
     return None
 
-
-caminho_dfs, custo_dfs = busca_dfs(mapa, 'Arad', 'Bucharest')
-print("--- DFS ---")
-print(f"Caminho: {' -> '.join(caminho_dfs)}" if caminho_dfs else "Caminho não encontrado")
-print(f"Custo Total: {custo_dfs}")
+caminho_bfs, custo_bfs = busca_bfs(mapa, 'Arad', 'Bucharest')
+print("--- BFS ---")
+print(f"Caminho: {' -> '.join(caminho_bfs)}" if caminho_bfs else "Caminho não encontrado")
+print(f"Custo Total: {custo_bfs}")
